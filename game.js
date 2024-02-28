@@ -36,30 +36,32 @@ function preload() {
 function create() {
   //this.add.image(0, 0, 'fon').setOrigin(0,0);
   //this.add.image(0, 0, "fon").setOrigin(0, 0);
+  // створено фон плиткою
   this.add.tileSprite(0, 0, worldWight, 1000, "fon").setOrigin(0, 0);
 
-  //
+  //додаємо платформи
   platforms = this.physics.add.staticGroup();
-
+// додємо землю на всю ширину
   for (var x = 0; x < worldWight; x = x + 450) {
     console.log(x);
+   
     platforms
       .create(x, 1080 - 128, "platform")
       .setOrigin(0, 0)
       .refreshBody();
   }
 
-  // 
-  player = this.physics.add.sprite(1000, 600, "dude");
-  player.setBounce(0, 2);
-  player.setColliderWorldBounds(false);
+  // створюємо гравця
+  player = this.physics.add.sprite(850, 600, "dude");
+  player.setBounce(0.2);
+  player.setCollideWorldBounds(false);
 
   this.physics.add.collider(player, platforms);
-
-  //   //
-  //   this.camera.main.setBounds(0, 0, worldWight, 1080);
-  //   this.physics.world.setBounds(0, 0, worldWight, 1080);
-  //   this.camera.maim.startFollow(player);
+// налаштування камери
+     this.camera.main.setBounds(0, 0, worldWight, 1080);
+    this.physics.world.setBounds(0, 0, worldWight, 1080);
+    //слідування камери за гравцем
+   this.camera.maim.startFollow(player);
 }
 
 function update() {}
