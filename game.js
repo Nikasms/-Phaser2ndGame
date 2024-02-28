@@ -52,7 +52,7 @@ function create() {
   }
 
   // створюємо гравця
-  player = this.physics.add.sprite(850, 600, "dude");
+  player = this.physics.add.sprite(950, 600, "dude");
   player.setBounce(0.2);
   player.setCollideWorldBounds(false);
 
@@ -62,6 +62,54 @@ function create() {
     this.physics.world.setBounds(0, 0, worldWight, 1080);
     //слідування камери за гравцем
    this.camera.maim.startFollow(player);
+// ходіння гравця в різні сторони
+   this.anims.create({
+    key: 'left',
+    frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+    frameRate: 10,
+    repeat: -1
+});
+
+this.anims.create({
+    key: 'turn',
+    frames: [ { key: 'dude', frame: 4 } ],
+    frameRate: 20
+});
+
+this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+    frameRate: 10,
+    repeat: -1
+});
 }
 
-function update() {}
+function update() { 
+    cursors = this.input.keyboard.createCursorKeys();
+    
+  // рух гравця, в різні сторони
+  if (cursors.left.isDown)
+  {
+      player.setVelocityX(-160);
+  
+      player.anims.play('left', true);
+  }
+  else if (cursors.right.isDown)
+  {
+      player.setVelocityX(160);
+  
+      player.anims.play('right', true);
+  }
+  else
+  {
+      player.setVelocityX(0);
+  
+      player.anims.play('turn');
+  }
+  
+  if (cursors.up.isDown && player.body.touching.down)
+  {
+      player.setVelocityY(-330);
+  }
+
+}
