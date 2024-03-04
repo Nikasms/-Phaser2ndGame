@@ -3,7 +3,7 @@ var config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  parent: game,
+  //parent: game,
   physics: {
     default: "arcade",
     arcade: {
@@ -31,6 +31,13 @@ function preload() {
   });
 
   this.load.image("platform", "assets/platform.png");
+  // додали пеньок
+  this.load.image("crate", "assets/crate.png");
+  //додали грибок
+  this.load.image("mushroom", "assets/mushroom.png");
+  //додали знак
+  this.load.image("sigh", "assets/sigh.png");
+
 }
 
 function create() {
@@ -51,6 +58,44 @@ function create() {
       .refreshBody();
   }
 
+
+// додали пеньочки
+  crates = this.physics.add.staticGroup();
+ 
+    for (var x = 0; x < worldWight; x = x + 450) {
+      console.log(x);
+     
+      platforms
+        .create(x, 1080 - 125, "crate")
+        .setOrigin(0, 1)
+        .refreshBody();
+    }
+ // додали грибок
+    mushrooms = this.physics.add.staticGroup();
+ 
+    for (var x = 0; x < worldWight; x = x + 550) {
+      console.log(x);
+     
+      platforms
+        .create(x, 1080 - 125, "mushroom")
+        .setOrigin(0, 1)
+        .refreshBody();
+    }
+// додаємо знаки
+    sighs = this.physics.add.staticGroup();
+ 
+    for (var x = 0; x < worldWight; x = x + 700) {
+      console.log(x);
+     
+      platforms
+        .create(x, 1080 - 125, "sigh")
+        .setOrigin(0, 1)
+        .refreshBody();
+    }
+  
+  
+  
+
   // створюємо гравця
   player = this.physics.add.sprite(950, 600, "dude");
   player.setBounce(0.2);
@@ -58,10 +103,10 @@ function create() {
 
   this.physics.add.collider(player, platforms);
 // налаштування камери
-     this.camera.main.setBounds(0, 0, worldWight, 1080);
+     this.cameras.main.setBounds(0, 0, worldWight, 1080);
     this.physics.world.setBounds(0, 0, worldWight, 1080);
     //слідування камери за гравцем
-   this.camera.maim.startFollow(player);
+   this.cameras.main.startFollow(player);
 // ходіння гравця в різні сторони
    
 this.anims.create({
