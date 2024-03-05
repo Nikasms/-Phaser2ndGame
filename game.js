@@ -59,6 +59,21 @@ function create() {
   }
 
 
+  objects = this.physics.add.staticGroup();
+  for (var x = 0; x <= worldWight; x = x + Phaser.Math.Between(200, 800)) {
+    objects.create(x = x + Phaser.Math.Between(40, 300), 1080, 'sigh').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
+    objects.create(x = x + Phaser.Math.Between(100, 600), 1080, 'crate').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
+    objects.create(x = x + Phaser.Math.Between(50, 700), 1080, 'mushroom').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
+    
+  }
+
+
+
+
+
+
+
+// прибрати
 // додали пеньочки
   crates = this.physics.add.staticGroup();
  
