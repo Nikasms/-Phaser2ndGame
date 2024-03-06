@@ -88,7 +88,7 @@ for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 500)){
   var y = Phaser.Math.Between(128, 970)
   platforms.create(x,y, '13')
   var i
-  for (i = 1; i<=Phaser.Math.Between(1,3); i++){
+  for (i = 1; i<=Phaser.Math.Between(1,5); i++){
     platforms.create(x + 128 * i, y ,  '14')
   }
   platforms.create(x + 128 * i,y, '15')
