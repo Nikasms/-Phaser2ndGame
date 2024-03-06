@@ -37,7 +37,10 @@ function preload() {
   this.load.image("mushroom", "assets/mushroom.png");
   //додали знак
   this.load.image("sigh", "assets/sigh.png");
-
+  this.load.image("13", "assets/13.png");
+  this.load.image("14", "assets/14.png");
+  this.load.image("15", "assets/15.png");
+  
 }
 
 function create() {
@@ -49,7 +52,7 @@ function create() {
   //додаємо платформи
   platforms = this.physics.add.staticGroup();
 // додємо землю на всю ширину
-  for (var x = 0; x < worldWight; x = x + 450) {
+  for (var x = 0; x < worldWight; x = x + 400) {
     console.log(x);
    
     platforms
@@ -60,55 +63,44 @@ function create() {
 
 
   objects = this.physics.add.staticGroup();
-  for (var x = 0; x <= worldWight; x = x + Phaser.Math.Between(200, 800)) {
-    objects.create(x = x + Phaser.Math.Between(40, 300), 1080, 'sigh').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
-    objects.create(x = x + Phaser.Math.Between(100, 600), 1080, 'crate').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
-    objects.create(x = x + Phaser.Math.Between(50, 700), 1080, 'mushroom').setScale(Phaser.Math.FloatBetween(0.5, 2)).setDepth(Phaser.Math.Between(0,2)) setOrigin(0, 1).refreshBody();
+  for (var x = 0; x <= worldWight; x = x + Phaser.Math.Between(400, 500)) {
+   objects
+   .create(x = x + Phaser.Math.Between(300, 500), 960, 'sigh')
+   .setScale(Phaser.Math.FloatBetween(0.5, 2))
+   .setDepth(Phaser.Math.Between(0,2)) 
+   .setOrigin(0, 1)
+   .refreshBody();
+    objects.create(x = x + Phaser.Math.Between(100, 600), 960, 'crate')
+    .setScale(Phaser.Math.FloatBetween(0.5, 2))
+    .setDepth(Phaser.Math.Between(0,2)) 
+    .setOrigin(0, 1)
+    .refreshBody();
+    objects.create(x = x + Phaser.Math.Between(100, 700), 960, 'mushroom')
+    .setScale(Phaser.Math.FloatBetween(0.5, 2))
+    .setDepth(Phaser.Math.Between(0,2)) 
+    .setOrigin(0, 1)
+    .refreshBody();
     
   }
 
+//літаючі платфоми
+for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 500)){
+  var y = Phaser.Math.Between(128, 970)
+  platforms.create(x,y, '13')
+  var i
+  for (i = 1; i<=Phaser.Math.Between(1,3); i++){
+    platforms.create(x + 128 * i, y ,  '14')
+  }
+  platforms.create(x + 128 * i,y, '15')
+}
 
 
 
 
 
 
-// прибрати
-// додали пеньочки
-  crates = this.physics.add.staticGroup();
- 
-    for (var x = 0; x < worldWight; x = x + 450) {
-      console.log(x);
-     
-      platforms
-        .create(x, 1080 - 125, "crate")
-        .setOrigin(0, 1)
-        .refreshBody();
-    }
- // додали грибок
-    mushrooms = this.physics.add.staticGroup();
- 
-    for (var x = 0; x < worldWight; x = x + 550) {
-      console.log(x);
-     
-      platforms
-        .create(x, 1080 - 125, "mushroom")
-        .setOrigin(0, 1)
-        .refreshBody();
-    }
-// додаємо знаки
-    sighs = this.physics.add.staticGroup();
- 
-    for (var x = 0; x < worldWight; x = x + 700) {
-      console.log(x);
-     
-      platforms
-        .create(x, 1080 - 125, "sigh")
-        .setOrigin(0, 1)
-        .refreshBody();
-    }
-  
-  
+
+
   
 
   // створюємо гравця
