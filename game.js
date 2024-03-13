@@ -18,6 +18,7 @@ var config = {
   },
 };
 var player;
+var life = 5;
 var game = new Phaser.Game(config);
 var worldWight = 9600;
 function preload() {
@@ -40,6 +41,8 @@ function preload() {
   this.load.image("13", "assets/13.png");
   this.load.image("14", "assets/14.png");
   this.load.image("15", "assets/15.png");
+  this.load.image("bomb", "assets/bomb.png");
+  this.load.image("star", "assets/star.png");
   
 }
 
@@ -92,11 +95,48 @@ for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 500)){
     platforms.create(x + 128 * i, y ,  '14')
   }
   platforms.create(x + 128 * i,y, '15')
+
 }
 
 
+//Додаємо рахунок
+scoreText = this.add.text(100, 100, 'Score: 0', { fontSize: '35px', fill: '#FFF' })
+scoreText.setOrigin(0, 0)
+    .setDepth(10)
+    .setScrollFactor(0);
+//Додаємо життя
+lifeText = this.add.text(1500, 100, showLife(), { fontSize: '35px', fill: '#FFF' })
+lifeText.setOrigin(0, 0)
+    .setDepth(10)
+    .setScrollFactor(0);
+//Кнопка перезапуску гри
+var resetButton = this.add.text(100, 70, "reset", { fontSize: "40px", fill: "#ccc" })
+    .setInteractive()
+    .setScrollFactor(0);
+
+resetButton.on("pointerdown", function () {
+    console.log ("restart")
+    refreshBody()
+});
 
 
+
+//Додали зірочки
+stars = this.physics.add.group({
+  key: 'star',
+  repeat: 111,
+  setXY: { x: 12, y: 0, stepX: 90 }
+});
+stars.children.iterate(function (child) {
+  child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+  
+}); 
+//Зіткнення зірочок з платформою
+this.physics.add.collider(stars, platforms);
+
+
+
+bombs = this.physics.add.group();
 
 
 
@@ -105,7 +145,7 @@ for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 500)){
 
   // створюємо гравця
   player = this.physics.add.sprite(950, 600, "dude");
-  player.setBounce(0.2);
+  player.setBounce(0.4);
   player.setCollideWorldBounds(false);
 
   this.physics.add.collider(player, platforms);
@@ -114,6 +154,7 @@ for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 500)){
     this.physics.world.setBounds(0, 0, worldWight, 1080);
     //слідування камери за гравцем
    this.cameras.main.startFollow(player);
+
 // ходіння гравця в різні сторони
    
 this.anims.create({
@@ -136,6 +177,9 @@ this.anims.create({
   repeat: -1
 });
 }
+
+
+
 
 function update() { 
     cursors = this.input.keyboard.createCursorKeys();
@@ -165,4 +209,56 @@ function update() {
       player.setVelocityY(-330);
   }
 
+}
+
+
+
+//Додали збираня зірок
+function collectStar(player, star) {
+  star.disableBody(true, true);
+  score += 5;
+  scoreText.setText('Score: ' + score);
+
+  var x = Phaser.Math.Between(0, config.width);
+  var y = Phaser.Math.Between(0, config.height);
+  var bomb = bombs.create(x, y, 'bomb');
+  bomb.setScale(1);
+  bomb.setBounce(1);
+  bomb.setCollideWorldBounds(true);
+  bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+
+  if (stars.countActive(true) === 0) {
+      stars.children.iterate(function (child) {
+          child.enableBody(true, child.x, 0, true, true);
+          child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+      });
+  }
+}
+//
+function hitBomb(player, bomb) {
+  bomb.disableBody (true, true);
+
+  player.setTint(0xff0000);
+  life -= 1
+  lifeText.setText(showLife())
+
+  console.log ("bomb")
+  player.anims.play("turn");
+
+  if (life == 0) gameOver = true;
+}
+// Перезапуск гри
+// function refreshBody (){
+//   console.log ("game over")
+
+
+//Формування смуги життя
+function showLife() {
+  var lifeLine = ''
+
+  for (var i = 0; i < life; i++) {
+  lifeLine = lifeLine + '💖'
+  }
+
+  return lifeLine
 }
