@@ -4,6 +4,7 @@ var config = {
   width: 1920,
   height: 1080,
   //parent: game,
+  playerSpeed: 1000, 
   physics: {
     default: "arcade",
     arcade: {
@@ -17,20 +18,24 @@ var config = {
     update: update,
   },
 };
+var score = 0; 
+var gameOver = false; 
+var stars;
+var bombs;
+var cursors;
+var lifeText;
 var player;
 var life = 5;
 var game = new Phaser.Game(config);
 var worldWight = 9600;
 function preload() {
-  //завантажили ресурси
+  //завантажили асети
 
   this.load.image("fon", "assets/fon.jpg");
-
   this.load.spritesheet("dude", "assets/dude.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
-
   this.load.image("platform", "assets/platform.png");
   // додали пеньок
   this.load.image("crate", "assets/crate.png");
@@ -49,6 +54,7 @@ function preload() {
 function create() {
   //this.add.image(0, 0, 'fon').setOrigin(0,0);
   //this.add.image(0, 0, "fon").setOrigin(0, 0);
+
   // створено фон плиткою
   this.add.tileSprite(0, 0, worldWight, 1000, "fon").setOrigin(0, 0);
 
@@ -66,6 +72,7 @@ function create() {
 
 
   objects = this.physics.add.staticGroup();
+  
   for (var x = 0; x <= worldWight; x = x + Phaser.Math.Between(400, 500)) {
    objects
    .create(x = x + Phaser.Math.Between(300, 500), 960, 'sigh')
@@ -131,22 +138,26 @@ stars.children.iterate(function (child) {
   child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
   
 }); 
+bombs = this.physics.add.group();
 //Зіткнення зірочок з платформою
 this.physics.add.collider(stars, platforms);
-
+this.physics.add.collider(bombs, platforms);
+this.physics.add.collider(player, bombs, hitBomb, null, this);
+this.physics.add.overlap(player, stars, collectStar, null, this);
 
 
 bombs = this.physics.add.group();
 
-
-
+// додали курсор
+cursors = this.input.keyboard.createCursorKeys();
 
   
 
   // створюємо гравця
-  player = this.physics.add.sprite(950, 600, "dude");
-  player.setBounce(0.4);
+  player = this.physics.add.sprite(1500, 600, "dude");
+  player.setBounce(0.5);
   player.setCollideWorldBounds(false);
+  player.setDepth(Phaser.Math.Between(2));
 
   this.physics.add.collider(player, platforms);
 // налаштування камери
@@ -182,7 +193,10 @@ this.anims.create({
 
 
 function update() { 
-    cursors = this.input.keyboard.createCursorKeys();
+if (gameOver) {
+  return;
+}
+    
     
   // рух гравця, в різні сторони
   if (cursors.left.isDown)
@@ -234,7 +248,7 @@ function collectStar(player, star) {
       });
   }
 }
-//
+//Колізія гравця і бомб
 function hitBomb(player, bomb) {
   bomb.disableBody (true, true);
 
@@ -248,8 +262,9 @@ function hitBomb(player, bomb) {
   if (life == 0) gameOver = true;
 }
 // Перезапуск гри
-// function refreshBody (){
-//   console.log ("game over")
+function refreshBody (){
+  console.log ("game over")
+  
 
 
 //Формування смуги життя
