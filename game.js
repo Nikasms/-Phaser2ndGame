@@ -146,8 +146,8 @@ bombs = this.physics.add.group();
 //Зіткнення зірочок з платформою
 this.physics.add.collider(stars, platforms);
 this.physics.add.collider(bombs, platforms);
-this.physics.add.collider(player, bombs, hitBomb, null, this);
-this.physics.add.overlap(player, stars, collectStar, null, this);
+// this.physics.add.collider(player, bombs, hitBomb, null, this);
+// this.physics.add.overlap(player, stars, collectStar, null, this);
 
 
 
