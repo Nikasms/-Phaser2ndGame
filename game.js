@@ -19,6 +19,7 @@ var config = {
   },
 };
 var score = 0; 
+var scoreText;
 var gameOver = false; 
 var stars;
 var bombs;
@@ -56,7 +57,10 @@ function create() {
   //this.add.image(0, 0, "fon").setOrigin(0, 0);
 
   // створено фон плиткою
-  this.add.tileSprite(0, 0, worldWight, 1000, "fon").setOrigin(0, 0);
+  this.add.tileSprite(0, 0, worldWight, 1080, "fon")
+  .setOrigin(0, 0);
+  //.setScale(1)
+  //.setDepth(0);
 
   //додаємо платформи
   platforms = this.physics.add.staticGroup();
@@ -146,7 +150,7 @@ this.physics.add.collider(player, bombs, hitBomb, null, this);
 this.physics.add.overlap(player, stars, collectStar, null, this);
 
 
-bombs = this.physics.add.group();
+
 
 // додали курсор
 cursors = this.input.keyboard.createCursorKeys();
@@ -193,10 +197,7 @@ this.anims.create({
 
 
 function update() { 
-if (gameOver) {
-  return;
-}
-    
+
     
   // рух гравця, в різні сторони
   if (cursors.left.isDown)
@@ -222,6 +223,14 @@ if (gameOver) {
   {
       player.setVelocityY(-330);
   }
+  if (gameOver) {
+    return;
+}
+
+// // Перевіряємо, чи життя рівне нулю, і показуємо кнопку
+// if (lives === 0) {
+//     reloadButton.setVisible(true);
+// }
 
 }
 
@@ -230,7 +239,7 @@ if (gameOver) {
 //Додали збираня зірок
 function collectStar(player, star) {
   star.disableBody(true, true);
-  score += 5;
+  score += 10;
   scoreText.setText('Score: ' + score);
 
   var x = Phaser.Math.Between(0, config.width);
@@ -249,24 +258,38 @@ function collectStar(player, star) {
   }
 }
 //Колізія гравця і бомб
+var isHitByBomb = false;
 function hitBomb(player, bomb) {
-  bomb.disableBody (true, true);
+    if (isHitByBomb) {
+        return;
+    }
+    isHitByBomb = true;
 
-  player.setTint(0xff0000);
-  life -= 1
-  lifeText.setText(showLife())
+    life = life - 1;
+    lifeText.setText(showlife());
 
-  console.log ("bomb")
-  player.anims.play("turn");
+    var direction = (bomb.x < player.x) ? 1 : -1;
+    bomb.setVelocityX(300 * direction);
 
-  if (life == 0) gameOver = true;
+    player.setTint(0xff0000);
+
+    this.time.addEvent({
+        delay: 1000,
+        callback: function() {
+            player.clearTint();
+            isHitByBomb = false;
+
+            if (life === 0) {
+                gameOver = true;
+                resetButton.setVisible(true); // Показуємо кнопку перезавантаження
+                this.physics.pause();
+                player.anims.play('turn');
+            }
+        },
+        callbackScope: this,
+        loop: false
+    });
 }
-// Перезапуск гри
-function refreshBody (){
-  console.log ("game over")
-  
-
-
 //Формування смуги життя
 function showLife() {
   var lifeLine = ''
