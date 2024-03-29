@@ -3,7 +3,7 @@ var config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  //parent: game,
+  parent: game,
   playerSpeed: 1000, 
   physics: {
     default: "arcade",
@@ -58,9 +58,9 @@ function create() {
 
   // створено фон плиткою
   this.add.tileSprite(0, 0, worldWight, 1080, "fon")
-  .setOrigin(0, 0);
-  //.setScale(1)
-  //.setDepth(0);
+  .setOrigin(0, 0)
+  .setScale(1)
+  .setDepth(0);
 
   //додаємо платформи
   platforms = this.physics.add.staticGroup();
@@ -146,7 +146,7 @@ bombs = this.physics.add.group();
 //Зіткнення зірочок з платформою
 this.physics.add.collider(stars, platforms);
 this.physics.add.collider(bombs, platforms);
-// this.physics.add.collider(player, bombs, hitBomb, null, this);
+this.physics.add.collider(player, stars, collectStar, null, this);
 // this.physics.add.overlap(player, stars, collectStar, null, this);
 
 

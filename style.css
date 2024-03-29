@@ -1,18 +1,18 @@
 body {
-    /* position: absolute; */
-     margin: 50;
-
-    /*height: 100vh;           
-    display: flex;
-    justify-content: center;
-    align-items: center; */
+     /* position: absolute;  */
+     margin: 0;
+     height: 100vh;           
+     display: flex;
+     justify-content: center;
+     align-items: center; 
 }
-/* #game {
-    margin: 0;
+
+ #game {
     position: relative;
-} */
-/* #score{
+} 
+
+#score{
     position: fixed;
     top: 20px;
     left: 20px;
-} */
+} 
