@@ -5,7 +5,6 @@ var config = {
   height: 1080,
   parent: game,
   playerSpeed: 1000, 
-  //parent: game
   physics: {
   default: "arcade",
     arcade: {
@@ -20,6 +19,7 @@ var config = {
   },
 };
 
+var gameOver = false;
 var score = 0;
 var scoreText;
 var gameOver = false;
@@ -30,7 +30,8 @@ var lifeText;
 var player;
 var life = 5;
 var game = new Phaser.Game(config);
-var worldWight = 9600;
+var worldWight = config.width * 5;
+
 function preload() {
   //завантажили асети
 
@@ -40,11 +41,8 @@ function preload() {
     frameHeight: 48,
   });
   this.load.image("platform", "assets/platform.png");
-  // додали пеньок
   this.load.image("crate", "assets/crate.png");
-  //додали грибок
   this.load.image("mushroom", "assets/mushroom.png");
-  //додали знак
   this.load.image("sigh", "assets/sigh.png");
   this.load.image("13", "assets/13.png");
   this.load.image("14", "assets/14.png");
@@ -54,9 +52,6 @@ function preload() {
 }
 
 function create() {
-  //this.add.image(0, 0, 'fon').setOrigin(0,0);
-  //this.add.image(0, 0, "fon").setOrigin(0, 0);
-
   // створено фон плиткою
 
   this.add.tileSprite(0, 0, worldWight, 1080, "fon")
@@ -64,9 +59,6 @@ function create() {
   .setScale(1)
   .setDepth(0);
 
-  this.add.tileSprite(0, 0, worldWight, 1080, "fon").setOrigin(0, 0);
-  //.setScale(1)
-  //.setDepth(0);
 
   //додаємо платформи
   platforms = this.physics.add.staticGroup();
@@ -149,27 +141,11 @@ function create() {
   stars.children.iterate(function (child) {
     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.6));
   });
-//Додали зірочки
-stars = this.physics.add.group({
-  key: 'star',
-  repeat: 111,
-  setXY: { x: 12, y: 0, stepX: 90 }
-});
-stars.children.iterate(function (child) {
-  child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-  
-}); 
-bombs = this.physics.add.group();
-//Зіткнення зірочок з платформою
-this.physics.add.collider(stars, platforms);
-this.physics.add.collider(bombs, platforms);
-//this.physics.add.collider(player, stars, collectStar, null, this);
-// this.physics.add.overlap(player, stars, collectStar, null, this);
+
+
 
   // додали бомбочки
-
-
-  bombs = this.physics.add.group({
+    bombs = this.physics.add.group({
     key: "bomb",
     repeat: 15,
     setXY: { x: 0, y: 0, stepX: 250 },
@@ -179,11 +155,10 @@ this.physics.add.collider(bombs, platforms);
   });
   //Зіткнення зірочок з платформою
   this.physics.add.collider(stars, platforms);
-
   this.physics.add.collider(bombs, platforms);
 
   //this.physics.add.collider(player, bombs, isHitByBomb , null, this);
-  //this.physics.add.collider(player, stars, collectStar, null, this);
+  this.physics.add.collider(player, stars, collectStar, null, this);
 
   // додали курсор
   cursors = this.input.keyboard.createCursorKeys();
@@ -192,8 +167,9 @@ this.physics.add.collider(bombs, platforms);
   player = this.physics.add.sprite(1500, 600, "dude");
   player.setBounce(0.5);
   player.setCollideWorldBounds(false);
-  player.setDepth(Phaser.Math.Between(2));
+ // player.setDepth(Phaser.Math.Between(2));
 
+// колізія гравця з платформою
   this.physics.add.collider(player, platforms);
   // налаштування камери
   this.cameras.main.setBounds(0, 0, worldWight, 1080);
