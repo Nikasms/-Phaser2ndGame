@@ -300,7 +300,7 @@ function showLife() {
   return lifeLine;
 }
 
-
+//перезапуск гри
   function refreshBody ()
   {
     console.log ('game over')
