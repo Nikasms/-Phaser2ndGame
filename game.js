@@ -152,7 +152,7 @@ function create() {
     setXY: { x: 0, y: 0, stepX: 250 },
   });
   bombs.children.iterate(function (child) {
-    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.6));
+    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.5));
   });
 
 
@@ -167,7 +167,7 @@ function create() {
 
   // створюємо гравця
   player = this.physics.add.sprite(1500, 600, "dude");
-  player.setBounce(0.5);
+  player.setBounce(0.6);
   player.setCollideWorldBounds(false);
  // player.setDepth(Phaser.Math.Between(2));
 
@@ -299,3 +299,10 @@ function showLife() {
 
   return lifeLine;
 }
+
+
+  function refreshBody ()
+  {
+    console.log ('game over')
+    location.reload()
+  }
