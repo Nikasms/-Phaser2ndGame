@@ -35,7 +35,7 @@ var worldWight = config.width * 5;
 function preload() {
   //завантажили асети
 
-  this.load.image("fon", "assets/fon.jpg");
+  this.load.image("fon", "assets/fon.png");
   this.load.spritesheet("dude", "assets/dude.png", {
     frameWidth: 32,
     frameHeight: 48,
@@ -64,7 +64,7 @@ function create() {
 
   // додємо землю на всю ширину
   for (var x = 0; x < worldWight; x = x + 400) {
-    console.log(x);
+    //console.log(x);
 
     platforms
       .create(x, 1080 - 128, "platform")
@@ -159,8 +159,8 @@ function create() {
   //Зіткнення зірочок з платформою
   this.physics.add.collider(stars, platforms);
   this.physics.add.collider(bombs, platforms);
-  this.physics.add.collider(player, bombs, hitBomb , null, this);
-  this.physics.add.overlap(player, stars, collectStar, null, this);
+
+ 
 
   // додали курсор
   cursors = this.input.keyboard.createCursorKeys();
@@ -170,6 +170,9 @@ function create() {
   player.setBounce(0.5);
   player.setCollideWorldBounds(false);
  // player.setDepth(Phaser.Math.Between(2));
+
+ this.physics.add.collider(player, bombs, hitBomb , null, this);
+ this.physics.add.overlap(player, stars, collectStar, null, this);
 
   // колізія гравця з платформою
   this.physics.add.collider(player, platforms);
@@ -226,9 +229,7 @@ function update() {
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-330);
   }
-  if (gameOver) {
-    return;
-  }
+  
 
 
 }
@@ -256,6 +257,7 @@ function collectStar(player, star) {
 }
 //Колізія гравця і бомб
 var isHitByBomb = false;
+
 function hitBomb(player, bomb) {
   if (isHitByBomb) {
     return;
@@ -263,7 +265,7 @@ function hitBomb(player, bomb) {
   isHitByBomb = true;
 
   life = life - 1;
-  lifeText.setText(showlife());
+  lifeText.setText(showLife());
 
   var direction = bomb.x < player.x ? 1 : -1;
   bomb.setVelocityX(300 * direction);
