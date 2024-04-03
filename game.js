@@ -41,14 +41,16 @@ function preload() {
     frameHeight: 48,
   });
   this.load.image("platform", "assets/platform.png");
-  this.load.image("crate", "assets/crate.png");
-  this.load.image("mushroom", "assets/mushroom.png");
+  this.load.image("stone", "assets/stone.png");
+  this.load.image("bush", "assets/bush.png");
   this.load.image("sigh", "assets/sigh.png");
   this.load.image("13", "assets/13.png");
   this.load.image("14", "assets/14.png");
   this.load.image("15", "assets/15.png");
   this.load.image("bomb", "assets/bomb.png");
   this.load.image("star", "assets/star.png");
+
+
 }
 
 function create() {
@@ -67,7 +69,7 @@ function create() {
     //console.log(x);
 
     platforms
-      .create(x, 1080 - 128, "platform")
+      .create(x, 1080 - 100, "platform")
       .setOrigin(0, 0)
       .refreshBody();
   }
@@ -77,19 +79,19 @@ function create() {
 
   for (var x = 0; x <= worldWight; x = x + Phaser.Math.Between(400, 500)) {
     objects
-      .create((x = x + Phaser.Math.Between(200, 500)), 960, "sigh")
+      .create((x = x + Phaser.Math.Between(200, 500)), 980, "sigh")
       .setScale(Phaser.Math.FloatBetween(0.5, 2))
       .setDepth(Phaser.Math.Between(0, 2))
       .setOrigin(0, 1)
       .refreshBody();
     objects
-      .create((x = x + Phaser.Math.Between(100, 600)), 960, "crate")
+      .create((x = x + Phaser.Math.Between(200, 600)), 980, "stone")
       .setScale(Phaser.Math.FloatBetween(0.5, 2))
       .setDepth(Phaser.Math.Between(0, 2))
       .setOrigin(0, 1)
       .refreshBody();
     objects
-      .create((x = x + Phaser.Math.Between(200, 700)), 960, "mushroom")
+      .create((x = x + Phaser.Math.Between(300, 700)), 980, "bush")
       .setScale(Phaser.Math.FloatBetween(0.5, 2))
       .setDepth(Phaser.Math.Between(0, 2))
       .setOrigin(0, 1)
@@ -99,7 +101,7 @@ function create() {
  
   //літаючі платфоми
   for (var x = 0; x < worldWight; x = x + Phaser.Math.Between(256, 600)) {
-    var y = Phaser.Math.Between(300, 970);
+    var y = Phaser.Math.Between(200, 950);
     platforms.create(x, y, "13");
     var i;
     for (i = 1; i <= Phaser.Math.Between(1, 4); i++) {
@@ -117,7 +119,7 @@ function create() {
   scoreText.setOrigin(0, 0).setDepth(10).setScrollFactor(0);
 
   //Додаємо життя
-  lifeText = this.add.text(1500, 100, showLife(), {
+  lifeText = this.add.text(1600, 80, showLife(), {
     fontSize: "35px",
     fill: "#FFF",
   });
@@ -125,14 +127,18 @@ function create() {
 
   //Кнопка перезапуску гри
   var resetButton = this.add
-    .text(100, 70, "reset", { fontSize: "40px", fill: "#ccc" })
+    .text(100, 50, "reset", { fontSize: "40px", fill: "#ccc" })
     .setInteractive()
     .setScrollFactor(0);
-
+    
   resetButton.on("pointerdown", function () {
     console.log("restart");
     refreshBody();
   });
+
+  
+  
+
 
   //Додали зірочки
   stars = this.physics.add.group({
@@ -155,7 +161,7 @@ function create() {
     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.5));
   });
 
-
+   
   //Зіткнення зірочок з платформою
   this.physics.add.collider(stars, platforms);
   this.physics.add.collider(bombs, platforms);
@@ -167,7 +173,7 @@ function create() {
 
   // створюємо гравця
   player = this.physics.add.sprite(1500, 600, "dude");
-  player.setBounce(0.6);
+  player.setBounce(0.8);
   player.setCollideWorldBounds(false);
  // player.setDepth(Phaser.Math.Between(2));
 
@@ -208,6 +214,15 @@ function create() {
 }
 
 function update() {
+
+//   enemy.moveTo(player, player.x, player.y, 300, 1)
+// }
+// //
+// enemy.children.iterate((child) => {
+//     if (Math.random() < 0.01) {
+//         child.setVelocityX(Phaser.Math.FloatBetween(-500, 500))
+//     }
+// })
   if (gameOver) {
     return;
   }
