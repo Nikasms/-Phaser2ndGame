@@ -19,7 +19,8 @@ var config = {
   },
 };
 
-
+var enemy;
+var enemyCount = 3;
 var score = 0;
 var scoreText;
 var gameOver = false;
@@ -49,6 +50,7 @@ function preload() {
   this.load.image("15", "assets/15.png");
   this.load.image("bomb", "assets/bomb.png");
   this.load.image("star", "assets/star.png");
+  this.load.image("skeleton","assets/skeleton.png");
 
 
 }
@@ -321,3 +323,13 @@ function showLife() {
     console.log ('game over')
     location.reload()
   }
+
+  // function showLife() {
+  //   var lifeLine = "";
+  
+  //   for (var i = 0; i < life; i++) {
+  //     lifeLine = lifeLine + "💖";
+  //   }
+  
+  //   return lifeLine;
+  // }
