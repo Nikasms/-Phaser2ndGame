@@ -175,7 +175,7 @@ function create() {
 
   // створюємо гравця
   player = this.physics.add.sprite(1500, 600, "dude");
-  player.setBounce(0.8);
+  player.setBounce(0.9);
   player.setCollideWorldBounds(false);
  // player.setDepth(Phaser.Math.Between(2));
 
