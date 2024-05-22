@@ -4,7 +4,7 @@ var config = {
   width: 1920,
   height: 1080,
   //parent: game,
-  playerSpeed: 1000, 
+  playerSpeed: 1500, 
   physics: {
   default: "arcade",
     arcade: {
