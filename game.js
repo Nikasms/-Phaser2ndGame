@@ -4,7 +4,6 @@ var config = {
   width: 1920,
   height: 1080,
   //parent: game,
-  playerSpeed: 1500, 
   physics: {
   default: "arcade",
     arcade: {
@@ -21,7 +20,9 @@ var config = {
 
 var enemy;
 var enemyCount = 3;
+var enemyText;
 var score = 0;
+var playerSpeed = 1000;
 var scoreText;
 var gameOver = false;
 var stars;
@@ -50,7 +51,7 @@ function preload() {
   this.load.image("15", "assets/15.png");
   this.load.image("bomb", "assets/bomb.png");
   this.load.image("star", "assets/star.png");
-  this.load.image("skeleton","assets/skeleton.png");
+  this.load.image("enemy","assets/skeleton.png");
 
 
 }
@@ -175,7 +176,7 @@ function create() {
 
   // створюємо гравця
   player = this.physics.add.sprite(1500, 600, "dude");
-  player.setBounce(0.9);
+  player.setBounce(0.4);
   player.setCollideWorldBounds(false);
  // player.setDepth(Phaser.Math.Between(2));
 
@@ -191,6 +192,13 @@ function create() {
 
   //слідування камери за гравцем
   this.cameras.main.startFollow(player);
+
+  
+
+
+  
+
+  
 
   // ходіння гравця в різні сторони
 
@@ -213,40 +221,32 @@ function create() {
     frameRate: 10,
     repeat: -1,
   });
+
+  
 }
 
 function update() {
 
-//   enemy.moveTo(player, player.x, player.y, 300, 1)
-// }
-// //
-// enemy.children.iterate((child) => {
-//     if (Math.random() < 0.01) {
-//         child.setVelocityX(Phaser.Math.FloatBetween(-500, 500))
-//     }
-// })
-  if (gameOver) {
-    return;
-  }
-  // рух гравця, в різні сторони
-  if (cursors.left.isDown) {
-    player.setVelocityX(-160);
+// керування
+if (cursors.left.isDown) {
+  player.setVelocityX(-playerSpeed);
 
-    player.anims.play("left", true);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(160);
+  player.anims.play('left', true);
+}
+else if (cursors.right.isDown) {
+  player.setVelocityX(playerSpeed);
 
-    player.anims.play("right", true);
-  } else {
-    player.setVelocityX(0);
+  player.anims.play('right', true);
+}
+else {
+  player.setVelocityX(0);
 
-    player.anims.play("turn");
-  }
+  player.anims.play('turn');
+}
 
-  if (cursors.up.isDown && player.body.touching.down) {
-    player.setVelocityY(-330);
-  }
-  
+if (cursors.up.isDown && player.body.touching.down) {
+  player.setVelocityY(-530);
+}
 
 
 }
